@@ -1,7 +1,7 @@
 import http from 'http'
 
-function handleRequest(req, res) {
-    res.end('Hello World!')
+function handleRequest(request, response) {
+    response.end('Hello World!')
 }
 const server = http.createServer(handleRequest)
 const port = 3000
