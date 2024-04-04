@@ -1,4 +1,6 @@
 import { expect, describe, test, jest, beforeEach } from '@jest/globals'
+import { InjectHttpInterceptor } from '../src/agent.js'
+import { Server } from 'http'
 
 const originalHttp = jest.createMockFromModule('http')
 describe('HTTP interceptor Agent', () => {
@@ -17,4 +19,13 @@ describe('HTTP interceptor Agent', () => {
         expect(response.setHeader).not.toHaveBeenCalled()
     })
 
+    test('should activate header interceptor', () => {
+        InjectHttpInterceptor()
+        const response = {
+            setHeader: jest.fn().mockReturnThis()
+        }
+        const serverInstance = new Server()
+        serverInstance.emit(eventName, request, response)
+        expect(response.setHeader).toHaveBeenCalledWith('X-Instrumented-By', 'TonyChopper')
+    })
 })
